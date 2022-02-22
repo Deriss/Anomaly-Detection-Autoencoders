@@ -20,7 +20,7 @@ test_free.rename(columns = names_dict,inplace=True)
 # load test data with faults and add them to an unique dataframe
 test_faulty = None
 for fault_number in range(1,22):
-    test_faulty_data = pd.read_table(path+f'd{fault_number:02d}.dat',sep='\s+',header=None)
+    test_faulty_data = pd.read_table(path+f'd{fault_number:02d}_te.dat',sep='\s+',header=None)
     test_faulty_data.rename(columns = names_dict,inplace=True)
     test_faulty_data['fault_number'] = fault_number
     if test_faulty is None:
