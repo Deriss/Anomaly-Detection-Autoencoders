@@ -210,10 +210,6 @@ if autoencoder:
 
 
 
-# ROC curve
-
-
-
     
     
 

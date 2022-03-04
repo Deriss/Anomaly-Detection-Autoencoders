@@ -1,6 +1,7 @@
 # Anomaly Detection Using Autoencoders for Tennessee Eastman Process
 
 This project consist of the implementation of models based on Autoencoders for the detection of anomalies (faults) for the Tennessee Eastman Process. This is a famous Benchmark for fault detection and control in the process industry. 
+To access the streamlit app, [click here](https://share.streamlit.io/deriss/anomaly-detection-autoencoders/main/Tennesse_Streamlit.py).
 
 
 
