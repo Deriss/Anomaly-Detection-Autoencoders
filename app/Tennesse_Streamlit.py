@@ -115,6 +115,8 @@ vars_dict = dict(zip_iterator)
 ##################### START APP
 # Title
 st.title('Tennessee Eastman Anomaly Detection using Multiple Autoencoders')
+st.markdown('by [Deris Spina](https://github.com/Deriss)')
+
 st.write('Due to their ability to recognize nonlinear patterns, autoencoders are useful to reconstruct multivariate data. However, autoencoders would encounter difficulties to reconstruct anomaly points correctly and, thus, present a larger reconstruction error. We can take advantage of this fact to detect anomalies. In order to do this, we can establishing a threshold reconstruction error, beyond which a data point is consider an anomaly.')
 st.write('In this work, an ensemble of four autoencoders was used to detect anomalies for the Tennesse Eastman Process. Each autoencoder uses a different set of variables, grouped by the equipment that they are related to: Reactor, Separator, Stripper or Streams. This arquitecture improves the detection of anomalies that only affects the process locally. The mean absolute error was selected as a measure for the reconstruction error. A test set containing 21 different failures was used.')
 # Fault selection
@@ -136,9 +138,9 @@ autoencoder = st.checkbox("Autoencoder Anomaly Detection")
 
 
 if autoencoder:
-    m_col, _ = st.columns([10,2])
+    m_col, _ = st.columns([8,4])
     with m_col:
-        quantile = st.slider(label = "Select quantile for threshold",min_value=0,max_value=100,value=99)
+        quantile = st.slider(label = "Select quantile for threshold [0-100%]",min_value=0,max_value=100,value=99,format = '%d%%' )
     thresholds = [np.quantile(train_mae[str(i)],quantile/100) for i in range(1,5) ]
     anom_test_99 = np.zeros_like(test_mae[str(1)],dtype=np.bool)
     anom_test_free_99 = np.zeros_like(test_free_mae[str(1)],dtype=np.bool)
@@ -154,8 +156,9 @@ if autoencoder:
 # Figure
 col_l, col_r = st.columns([7,3])
 fig = plt.figure(figsize=(15,8))
-plt.title(f"Anomalies detected using Autoencoder Ensemble - Fault {fault_number}")
+plt.title(f"Anomalies detected using Autoencoder Ensemble - Fault {fault_number}\n",fontsize=18)
 plt.plot(test_faulty.index[:960],test_faulty[vars_dict[selected_col]][960*(fault_number-1):960*fault_number])
+plt.xlim([0,960])
 plt.ylabel(selected_col)
 if autoencoder: 
     plt.plot(test_faulty.index[:960],masked_values,'r')
@@ -172,7 +175,7 @@ if autoencoder:
     #Figure ROC
     false_positive_rate, true_positive_rate = ROI_curve2(train_mae,test_mae[960*(fault_number-1):960*fault_number],test_free_mae,plot=False)
     fig2 = plt.figure(figsize=(3.5,4.9))
-    plt.title("ROC Curve")
+    plt.title("ROC Curve\n")
     plt.plot(false_positive_rate, true_positive_rate,'-')
     plt.plot([0,1],[0,1],'-')
     plt.ylabel("TPR")
@@ -196,6 +199,7 @@ if autoencoder:
     
     fig3 = plt.figure(figsize=(15,8))
     plt.plot(test_mae[str(labels_ae.index(selected_ae)+1)][960*(fault_number-1):960*fault_number],'k')
+    plt.xlim([0,960])
     plt.title("Evaluation Metric for each Autoencoder of the Ensemble\n", fontsize=18)
     plt.legend([selected_ae])
     plt.ylabel("Mean Absolute Error", fontsize=16)
