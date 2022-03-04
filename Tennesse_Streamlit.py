@@ -56,8 +56,8 @@ def ROI_curve2(train_mae,test_mae,test_free_mae,plot=True):
     return((false_positive_rate,true_positive_rate))
 ##############
 # Read files
-test_faulty = pd.read_csv('./data/processed/TEP_test_faulty.csv')
-test_free = pd.read_csv('./data/processed/TEP_test_free.csv')
+test_faulty = pd.read_csv('./Data/processed/TEP_test_faulty.csv')
+test_free = pd.read_csv('./Data/processed/TEP_test_free.csv')
 anomaly = np.genfromtxt('./outputs/Anomaly_4AE.csv', delimiter=',')
 anomaly_free = np.genfromtxt('./outputs/Anomaly_4AE.csv', delimiter=',')
 train_mae = pd.read_csv('./outputs/train_mae_4AE.csv',index_col=0)
