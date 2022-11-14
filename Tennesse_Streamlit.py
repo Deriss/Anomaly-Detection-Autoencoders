@@ -7,7 +7,7 @@ import string
 
 st.set_page_config(page_title="Anomaly Detection Using Autoencoders", page_icon=None, layout='wide')
 # Auxiliary function
-def ROI_curve2(train_mae,test_mae,test_free_mae,plot=True):
+def ROI_curve(train_mae,test_mae,test_free_mae,plot=True):
     
     # Create mask for normal points in the test faulty set
     index = np.arange(len(test_mae["1"]))
@@ -32,8 +32,8 @@ def ROI_curve2(train_mae,test_mae,test_free_mae,plot=True):
     # Calculate anomalies
 
     for k in range(thresholds.shape[1]):
-        anom_test.append(np.zeros_like(test_mae["1"],dtype=np.bool))
-        anom_test_free.append(np.zeros_like(test_free_mae["1"],dtype=np.bool))
+        anom_test.append(np.zeros_like(test_mae["1"],dtype=bool))
+        anom_test_free.append(np.zeros_like(test_free_mae["1"],dtype=bool))
         for i in range(4):
             anom_test[k] = anom_test[k] | (test_mae[str(i+1)] > thresholds[i,k])
             anom_test_free[k] = anom_test_free[k] | (test_free_mae[str(i+1)]>thresholds[i,k])
@@ -173,7 +173,7 @@ with col_l:
 
 if autoencoder:
     #Figure ROC
-    false_positive_rate, true_positive_rate = ROI_curve2(train_mae,test_mae[960*(fault_number-1):960*fault_number],test_free_mae,plot=False)
+    false_positive_rate, true_positive_rate = ROI_curve(train_mae,test_mae[960*(fault_number-1):960*fault_number],test_free_mae,plot=False)
     fig2 = plt.figure(figsize=(3.5,4.9))
     plt.title("ROC Curve\n")
     plt.plot(false_positive_rate, true_positive_rate,'-')
